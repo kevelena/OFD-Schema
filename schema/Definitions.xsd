@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 (http://www.altova.com) by TEAM ViRiLiTY (VRL) -->
+<xs:schema xmlns="http://www.ofdspec.org"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://www.ofdspec.org" elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+  <!--公用的简单类型定义。-->
+  <xs:simpleType name="ST_ID">
+    <xs:annotation>
+      <xs:documentation>标识类型，无符号整数，应全局唯一。</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt" />
+  </xs:simpleType>
+  <xs:simpleType name="ST_RefID">
+    <xs:annotation>
+      <xs:documentation>标识引用，无符号整数，应已在标识中使用了该数值。 </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt" />
+  </xs:simpleType>
+  <xs:simpleType name="ST_Loc">
+    <xs:annotation>
+      <xs:documentation>文件路径 “.”表示当前路径，“..”表示父路径 “/”表示根路径，直接跟路径不以"."、".."、"/"修饰表示当前路径</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:anyURI" />
+  </xs:simpleType>
+  <xs:simpleType name="ST_Array">
+    <xs:annotation>
+      <xs:documentation>数组，以空格来分割元素。元素可以是除Loc、Array外的数据类 型，不可嵌套，在描述时可能会有元素数量和范围的限定。</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="ST_Pos">
+    <xs:annotation>
+      <xs:documentation>点坐标，以空格分割，前者为x值，后者为y值，可以是整数或者 浮点数。</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+
+  <xs:simpleType name="ST_Box">
+    <xs:annotation>
+      <xs:documentation>矩形区域，以空格分割，前两个值代表了该矩形的左上点，后两 个值依次表示该矩形的宽和高，可以是整数或者浮点数，后两个值应大于0。 </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <!--公用的复杂类型定义。-->
+  <xs:complexType name="CT_Base" abstract="true">
+    <xs:annotation>
+      <xs:documentation>基本类型，可被ID引用的类型均基于此类型，比如各种资源、图 元和页面组成元素。</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="ID" type="ST_ID" use="required">
+      <xs:annotation>
+        <xs:documentation>声明该对象的标识，不能与已有标识重复。 </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="CT_Dest">
+    <xs:annotation>
+      <xs:documentation>跳转的目标区域类型。</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Type" use="required">
+      <xs:annotation>
+        <xs:documentation>声明目标区域的描述方法。</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="XYZ">
+            <xs:annotation>
+              <xs:documentation>目标区域由左上角位置（Left，Top）以及页面缩放比 例（Zoom）确定。</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Fit">
+            <xs:annotation>
+              <xs:documentation>适合页面。</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="FitH">
+            <xs:annotation>
+
+              <xs:documentation>适合宽度，目标区域位置仅由Top坐标确定。 </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="FitV">
+            <xs:annotation>
+              <xs:documentation>适合高度，目标区域位置仅由Left坐标确定。 </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="FitR">
+            <xs:annotation>
+              <xs:documentation>适合窗口，目标区域为（Left， Top， Right，Bottom） 所确定的矩形区域。</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="PageID" type="ST_RefID" use="required">
+      <xs:annotation>
+        <xs:documentation>目标页标识。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Left" type="xs:double">
+      <xs:annotation>
+        <xs:documentation>目标区域左上角x坐标，</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Top" type="xs:double">
+      <xs:annotation>
+        <xs:documentation>目标区域左上角y坐标，</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Right" type="xs:double">
+      <xs:annotation>
+        <xs:documentation>目标区域右下角x坐标，</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Bottom" type="xs:double">
+      <xs:annotation>
+        <xs:documentation>目标区域右下角y坐标</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Zoom" type="xs:double">
+      <xs:annotation>
+        <xs:documentation>目标区域页面缩放比例</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="CT_PageArea">
+    <xs:annotation>
+      <xs:documentation>页面设置定义类型。</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PhysicalBox" type="ST_Box">
+        <xs:annotation>
+          <xs:documentation>页面物理区域，以其左上角为页面空间坐标系的原点。 </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ApplicationBox" type="ST_Box" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>显示区域，页面内容实际显示或打印输出的区域，位于页面 物理区域内，包含页眉、页脚、版心等内容。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ContentBox" type="ST_Box" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>（可选）版心区域，即文档的正文区域，位于显示区域内。 左上点的坐标决定了其在显示区域内的位置。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="BleedBox" type="ST_Box" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>（可选）出血区域，位于页面物理区域外。不出现时，默认 值为页面物理区域。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--动作及动作集定义。-->
+  <xs:complexType name="CT_Actions">
+    <xs:annotation>
+      <xs:documentation>动作序列（动作集）类型。</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Action" type="CT_Action" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>一个动作序列由一个或多个动作组成。 </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CT_Action">
+    <xs:annotation>
+      <xs:documentation>动作类型。</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Region" type="CT_Region" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>指定多个复杂区域为该链接对象的激活区域，不出现时以所 在图元或页面的外接矩形作为激活区域。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:choice>
+        <xs:element name="Goto">
+          <xs:annotation>
+            <xs:documentation>文档内的跳转动作</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Dest" type="CT_Dest">
+                <xs:annotation>
+                  <xs:documentation>跳转动作的目标</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="URI">
+          <xs:annotation>
+            <xs:documentation>打开URI动作。当URI指向文件时，相当于打开文件。 </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:attribute name="URI" type="xs:string" use="required">
+              <xs:annotation>
+                <xs:documentation>目标URI的位置。</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Base" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>Base URI，用于相对地址引用。</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Sound">
+          <xs:annotation>
+            <xs:documentation>播放声音文件的动作。</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:attribute name="ResourceID" type="ST_RefID" use="required">
+              <xs:annotation>
+                <xs:documentation>播放的声音资源标识，将根据该标识在资源多媒体列 表中查找。</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Volume" type="xs:int">
+              <xs:annotation>
+                <xs:documentation>播放的音量</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Repeat" type="xs:boolean">
+              <xs:annotation>
+                <xs:documentation>是否重复播放</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Synchronous" type="xs:boolean">
+              <xs:annotation>
+                <xs:documentation>如果为true，表示后续动作应等待此音频播放结束后 才能开始，如果为false，则表示立刻返回并开始下一个动作，缺省为false。 </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Movie">
+          <xs:annotation>
+            <xs:documentation>播放视频文件的动作。</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:attribute name="ResourceID" type="ST_RefID" use="required">
+              <xs:annotation>
+
+                <xs:documentation>播放的视频资源标识，将根据该标识在资源多媒体列 表中查找。</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Operator" default="Play">
+              <xs:annotation>
+                <xs:documentation>放映的参数。</xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="Play" />
+                  <xs:enumeration value="Stop" />
+                  <xs:enumeration value="Pause" />
+                  <xs:enumeration value="Resume" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="Event" use="required">
+      <xs:annotation>
+        <xs:documentation>事件类型，触发动作的条件。</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="DO">
+            <xs:annotation>
+              <xs:documentation>打开文档时触发，Event=DO的Action不应出现在文档的 页面描述中。</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="PO">
+            <xs:annotation>
+              <xs:documentation>打开页面时触发，Event=PO的Action推荐同时确定触发 区域。</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="CLICK">
+            <xs:annotation>
+              <xs:documentation>单击时触发</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="CT_Region">
+    <xs:annotation>
+      <xs:documentation>动作的触发区类型。</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Area" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>一个区域由若干Path组成。每个区域由一个连续的Path构 成。Region的区域是各个Area的“并”</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:choice maxOccurs="unbounded">
+            <xs:element name="Line">
+              <xs:annotation>
+                <xs:documentation>线段</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:attribute name="Point1" type="ST_Pos" use="required">
+                  <xs:annotation>
+                    <xs:documentation>Line的目标点</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="QuadraticBezier">
+              <xs:annotation>
+                <xs:documentation>二次贝塞尔曲线</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:attribute name="Point1" type="ST_Pos" use="required">
+                  <xs:annotation>
+                    <xs:documentation>二次贝塞尔的控制点</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Point2" type="ST_Pos" use="required">
+                  <xs:annotation>
+                    <xs:documentation>二次贝塞尔的目标点</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="CubicBezier">
+              <xs:annotation>
+                <xs:documentation>三次贝塞尔曲线</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:attribute name="Point1" type="ST_Pos">
+                  <xs:annotation>
+                    <xs:documentation>三次贝塞尔的控制点1</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Point2" type="ST_Pos">
+                  <xs:annotation>
+                    <xs:documentation>三次贝塞尔的控制点2</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Point3" type="ST_Pos" use="required">
+                  <xs:annotation>
+                    <xs:documentation>三次贝塞尔的目标点</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Arc">
+              <xs:annotation>
+                <xs:documentation>圆弧</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:attribute name="SweepDirection" type="xs:boolean"
+                  use="required">
+                  <xs:annotation>
+                    <xs:documentation>为true时表示由圆弧起点到终点是顺时针旋转， false表示由圆弧起点到终点是逆时针旋转</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="LargeArc" type="xs:boolean" use="required">
+                  <xs:annotation>
+                    <xs:documentation>为true时表示对应为度数大于180度的弧，false 表示对应度数小于180度的弧</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="RotationAngle" type="xs:double"
+                  use="required">
+                  <xs:annotation>
+                    <xs:documentation>表示椭圆在当前坐标系下旋转的角度，正值为顺 时针，负值为逆时针</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="EllipseSize" type="ST_Array" use="required">
+                  <xs:annotation>
+                    <xs:documentation>二维数组，以“rx ry”的形式组织。rx表示椭 圆的长轴长度，ry表示椭圆的短轴长度</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="EndPoint" type="ST_Pos" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:choice>
+          <xs:attribute name="Start" type="ST_Pos" use="required">
+            <xs:annotation>
+              <xs:documentation>起始点</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

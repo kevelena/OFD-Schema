@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 (http://www.altova.com) by TEAM ViRiLiTY (VRL) -->
+<xs:schema xmlns="http://www.ofdspec.org"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://www.ofdspec.org" elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+  <xs:include schemaLocation="Definitions.xsd" />
+  <!--注释文件单独存放，通过ID引用与被扩展对象发生“非接触式（分离式）”关联。-->
+  <xs:element name="Extensions">
+    <xs:annotation>
+      <xs:documentation>扩展信息文件的根节点。</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Extension" type="CT_Extension" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="CT_Extension">
+    <xs:annotation>
+      <xs:documentation>扩展信息类型</xs:documentation>
+    </xs:annotation>
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Property">
+        <xs:annotation>
+          <xs:documentation>扩展的属性，用于简单的扩展。</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="Name" type="xs:string" use="required">
+                <xs:annotation>
+                  <xs:documentation>扩展的属性名称。</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="Type" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>数据的类型。建议采用xml中的类型描述。 </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Data" type="xs:anyType">
+        <xs:annotation>
+          <xs:documentation>扩展的复杂属性，用于较复杂的扩展</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ExtendData" type="ST_Loc">
+        <xs:annotation>
+          <xs:documentation>扩展的数据文件所在位置,适用于扩展大量信息。 </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+    <xs:attribute name="AppName" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>扩展软件名称。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Company" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>扩展公司标识。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="AppVersion" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>扩展软件版本。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Date" type="xs:dateTime">
+      <xs:annotation>
+        <xs:documentation>扩展的时间。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="RefId" type="ST_RefID" use="required">
+      <xs:annotation>
+        <xs:documentation>扩展项针对的文档项的ID。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+</xs:schema> 

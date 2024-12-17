@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 (http://www.altova.com) by TEAM ViRiLiTY (VRL) -->
+<xs:schema xmlns="http://www.ofdspec.org"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://www.ofdspec.org" elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+  <xs:include schemaLocation="Page.xsd" />
+  <xs:include schemaLocation="Definitions.xsd" />
+  <!--注释文件单独存放，通过ID引用与被注释对象发生“非接触式（分离式）”关联。-->
+  <xs:element name="Annotations">
+    <xs:annotation>
+      <xs:documentation>注释信息文件的根节点。</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Page" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>注释按页面为单位组织</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Annot" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="CT_Annotation" />
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="PageID" type="ST_RefID" use="required">
+              <xs:annotation>
+                <xs:documentation>指向注释对象所在页面的标识。 </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="CT_Annotation">
+    <xs:annotation>
+      <xs:documentation>注释信息类型</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Remark" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>标注的内容。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AnnoReference" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>关联的页面对象。</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="ObjectRef" type="ST_RefID" use="required">
+            <xs:annotation>
+              <xs:documentation>通常为指向标注页面的ID。</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Appearance">
+        <xs:annotation>
+          <xs:documentation>注释的静态呈现效果，使用页面块定义来描述。 </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="CT_PageBlock">
+              <xs:attribute name="Boundary" type="ST_Box">
+                <xs:annotation>
+                  <xs:documentation>注释所在的页面坐标系下的空间范围，注释所属的 静态显示图元均相对于该范围的左上角。不存在时，以页面的左上角作为所属静态图元的参
+                    考点，并根据所属图元的外接矩形的外接最小矩形作为该注释的交互区域。 </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Type" use="required">
+      <xs:annotation>
+        <xs:documentation>注释类型</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Link">
+            <xs:annotation>
+              <xs:documentation>链接注释。</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Path">
+            <xs:annotation>
+              <xs:documentation>路径注释，此对象一般为图形对象，比如矩形、多边形、 贝塞尔曲线等。</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Highlight">
+            <xs:annotation>
+              <xs:documentation>高亮注释。</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Stamp">
+            <xs:annotation>
+              <xs:documentation>签章注释，此对象一般为图像对象 </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Watermark">
+            <xs:annotation>
+              <xs:documentation>水印注释。</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="Creator" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>注释创建者。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="LastModDate" type="xs:date" use="required">
+      <xs:annotation>
+        <xs:documentation>最近一次修改的时间。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Visible" type="xs:boolean" default="true">
+
+    </xs:attribute>
+    <xs:attribute name="Print" type="xs:boolean" default="true">
+      <xs:annotation>
+        <xs:documentation>表示该对象是否将随页面一起打印，默认为打印。 </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="NoZoom" type="xs:boolean" default="false">
+      <xs:annotation>
+        <xs:documentation>表示该对象的Remark是否不随页面一起缩放。默认为一起缩 放。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="NoRotate" type="xs:boolean" default="false">
+      <xs:annotation>
+        <xs:documentation>表示该对象的Remark是否不随页面一起翻转。默认为一起旋 转。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ReadOnly" type="xs:boolean" default="true">
+      <xs:annotation>
+        <xs:documentation>表示该对象的内容和属性是否不能更改。 </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="SignRef" type="ST_RefID">
+      <xs:annotation>
+        <xs:documentation>当Type为stamp时出现该属性，指向数字签名节点的ID。 </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+</xs:schema> 

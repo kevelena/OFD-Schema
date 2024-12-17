@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 (http://www.altova.com) by TEAM ViRiLiTY (VRL) -->
+<xs:schema xmlns="http://www.ofdspec.org"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://www.ofdspec.org" elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+  <xs:include schemaLocation="Page.xsd" />
+  <xs:include schemaLocation="Definitions.xsd" />
+  <!--资源文件定义。文档中使用的资源性文件比如图形、图像、多媒体、绘制参数（样式）
+等应在资源文件中统一管理。-->
+  <xs:element name="Res">
+    <xs:annotation>
+      <xs:documentation>资源文件的根元素。</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ColorSpaces" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>包含了一组颜色空间的描述。</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ColorSpace" type="CT_ColorSpace"
+                maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DrawParams" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>包含了一组绘制参数的描述。</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DrawParam" type="CT_DrawParam"
+                maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Fonts" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>包含了一组文档所用字体的描述。</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Font" type="CT_Font" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="MultiMedias" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>包含了一组文档所用多媒体对象的描述。 </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MultiMedia" type="CT_MultiMedia"
+                maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CompositeGraphicUnits" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>包含了一组复合对象的描述，将复合对象定义于此是为了 在页面或页面间重用。</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CompositeGraphicUnit"
+                type="CompositeGraphicUnit" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:attribute name="BaseLoc" type="ST_Loc" use="required">
+        <xs:annotation>
+          <xs:documentation>定义此资源描述文件的通用数据存储路径。 </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <!--颜色空间的定义-->
+  <xs:complexType name="CT_ColorSpace">
+    <xs:annotation>
+      <xs:documentation>颜色空间（资源）类型。</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="CT_Base">
+        <xs:sequence minOccurs="0">
+          <xs:element name="Palette">
+            <xs:annotation>
+              <xs:documentation>调色板描述。</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="CV" type="ST_Array" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>预定义颜色。</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Type" use="required">
+          <xs:annotation>
+            <xs:documentation>使用的颜色空间的类型。</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="GRAY" />
+              <xs:enumeration value="RGB" />
+              <xs:enumeration value="CMYK" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="BitsPerComponent" type="xs:int" default="8">
+          <xs:annotation>
+            <xs:documentation>每个颜色通道所使用的位数。</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Profile" type="ST_Loc">
+          <xs:annotation>
+            <xs:documentation>指定颜色配置文件。</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!--绘制参数定义-->
+  <xs:complexType name="CT_DrawParam">
+    <xs:annotation>
+      <xs:documentation>绘制参数（资源）类型</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="CT_Base">
+        <xs:sequence>
+          <xs:element name="FillColor" type="CT_Color" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>填充颜色，默认值为透明色。</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="StrokeColor" type="CT_Color" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>勾边颜色，默认值为黑色。</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Relative" type="ST_RefID">
+          <xs:annotation>
+            <xs:documentation>指明当前绘制参数的基础绘制参数（基样式）。 </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="LineWidth" type="xs:double" default="0.353">
+          <xs:annotation>
+            <xs:documentation>线宽。默认值为0.353毫米（相当于1磅）。 </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Join" default="Miter">
+          <xs:annotation>
+            <xs:documentation>结合点样式，默认值为Miter。</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="Miter" />
+              <xs:enumeration value="Round" />
+              <xs:enumeration value="Bevel" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="Cap" default="Butt">
+          <xs:annotation>
+            <xs:documentation>端点样式，默认值为Butt。</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="Butt" />
+              <xs:enumeration value="Round" />
+              <xs:enumeration value="Square" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="DashOffset" type="xs:double" default="0">
+          <xs:annotation>
+            <xs:documentation>虚线重复样式开始的位置。</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DashPattern" type="ST_Array">
+          <xs:annotation>
+            <xs:documentation>虚线的重复样式。</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="MiterLimit" type="xs:double" default="3.528">
+          <xs:annotation>
+            <xs:documentation>Join为Miter时的JoinSize的截断值。默认为3.528毫米 （10磅）</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!--字体资源定义-->
+  <xs:complexType name="CT_Font">
+    <xs:annotation>
+      <xs:documentation>字体声明（资源）类型。</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="CT_Base">
+        <xs:sequence>
+          <xs:element name="FontFile" type="ST_Loc" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>指向TrueType或OpenType子集化字体文件，应是包内的 一个有效字体文件。</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="FontName" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>字体名，即字体的facename。</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="FamilyName" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>字体族名，用于匹配替代字体。</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Charset" default="GB18030">
+          <xs:annotation>
+            <xs:documentation>字符集，用于匹配替代字体。</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="Italic" type="xs:boolean" default="false">
+          <xs:annotation>
+            <xs:documentation>是否斜体，用于匹配替代字体。</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Bold" type="xs:boolean" default="false">
+          <xs:annotation>
+            <xs:documentation>是否粗体，用于匹配替代字体。</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Serif" type="xs:boolean" default="false">
+          <xs:annotation>
+            <xs:documentation>是否有衬线，用于匹配替代字体。</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="FixedWidth" type="xs:boolean" default="false">
+          <xs:annotation>
+            <xs:documentation>是否是固定字宽，用于匹配替代字体。 </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!--多媒体资源定义-->
+  <xs:complexType name="CT_MultiMedia">
+    <xs:annotation>
+      <xs:documentation>多媒体（资源）类型。包括图像、声音、视频。</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="CT_Base">
+        <xs:sequence>
+          <xs:element name="MediaFile" type="ST_Loc">
+            <xs:annotation>
+              <xs:documentation>指向包内多媒体文件位置，应为包内文件。 </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Type" use="required">
+          <xs:annotation>
+            <xs:documentation>多媒体的主类型。</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="Image">
+                <xs:annotation>
+                  <xs:documentation>图像多媒体</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="Audio">
+                <xs:annotation>
+                  <xs:documentation>声音多媒体</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="Video">
+                <xs:annotation>
+                  <xs:documentation>视频多媒体</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="Format" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>资源的格式。例如图像文件格式可以是BMP、JPEG、TIFF 或PNG。</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!--复合对象定义-->
+  <xs:complexType name="CompositeGraphicUnit">
+    <xs:annotation>
+      <xs:documentation>复合对象（资源）类型</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="CT_Base">
+        <xs:sequence>
+          <xs:element name="Thumbnail" type="ST_RefID" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>内容的缩略图。</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Substitution" type="ST_RefID" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>内容的替换，用于高分辨率输出时替换。 </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Content" type="CT_PageBlock">
+            <xs:annotation>
+              <xs:documentation>内容的矢量描述，使用相对于该组合对象的坐标系 </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Width" type="xs:double" use="required">
+          <xs:annotation>
+            <xs:documentation>复合图元的宽度，超出部分做Clip处理。 </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Height" type="xs:double" use="required">
+          <xs:annotation>
+            <xs:documentation>复合图元的高度，超出部分做Clip处理。 </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema> 

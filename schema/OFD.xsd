@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 (http://www.altova.com) by TEAM ViRiLiTY (VRL) -->
+<xs:schema xmlns="http://www.ofdspec.org"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://www.ofdspec.org" elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+  <xs:include schemaLocation="Definitions.xsd" />
+  <!--主入口定义。-->
+  <xs:element name="OFD">
+    <xs:annotation>
+      <xs:documentation>主入口文件的根元素。</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:element name="DocBody">
+          <xs:annotation>
+            <xs:documentation>文档根入口，可以存在多个，以便在一个文件（包）中包含多个 版式文档。</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+          <xs:sequence>
+            <xs:element name="DocInfo" type="CT_DocInfo">
+              <xs:annotation>
+                <xs:documentation>文档元数据信息描述。</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="DocRoot" type="ST_Loc">
+              <xs:annotation>
+                <xs:documentation>指向文档根节点文件。</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="Signatures" type="ST_Loc" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>指向该文档中针对文档内容的签名信息文件。 </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+         </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="Version" type="xs:string" use="required" fixed="1.0">
+        <xs:annotation>
+          <xs:documentation>文档模型的版本号。</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="DocType" use="required" fixed="OFD">
+        <xs:annotation>
+          <xs:documentation>文档子集类型，可取值如下： “OFD”：表明此文档采用OFD标准。</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="OFD">
+              <xs:annotation>
+                <xs:documentation>类型为type1</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="CT_DocInfo">
+    <xs:annotation>
+      <xs:documentation>文档元数据类型,当DocInfo下的定义的元数据与用户自定义元数据 发生冲突时，以DocInfo下的元数据为准。</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="DocID" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>采用UUID算法生成的文档标识。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Title" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>文档的标题。标题可以与文件名不同，可用于文档的检索。 </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Author" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>文档的作者。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Subject" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>文档的主题。用于将文档按照相同的主题分组，并可检索具有相 同主题的文档。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Abstract" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>文档的摘要与注释。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CreationDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>文档的创建日期。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ModDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>文档最近修改日期。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DocUsage" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>文档的分类。用于文档的检索和分组。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Cover" type="ST_Loc" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>文档封面。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Keywords" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>关键字集合，每一个关键字用一个“关键字”元素来表达。 </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Keyword" type="xs:string" maxOccurs="unbounded">
+              <xs:annotation>
+              <xs:documentation>用于文档检索的关键字。</xs:documentation>
+             </xs:annotation> 
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Creator" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>创建文档的应用程序。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CreatorVersion" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>创建文档的应用程的版本信息。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CustomDatas" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>用户自定义元数据集合。</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="CustomData" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>用户自定义元数据，可以指定一个名称,及其对应的值。 </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:attribute name="Name" type="xs:string" use="required">
+                      <xs:annotation>
+                        <xs:documentation>元数据名称。</xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema> 

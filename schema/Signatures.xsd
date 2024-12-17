@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 (http://www.altova.com) by TEAM ViRiLiTY (VRL) -->
+<xs:schema xmlns="http://www.ofdspec.org"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+  targetNamespace="http://www.ofdspec.org" elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+  <xs:include schemaLocation="Definitions.xsd" />
+  <xs:import namespace="http://www.w3.org/2000/09/xmldsig#"
+    schemaLocation="ext\xmldsig-core-schema.xsd" />
+  <xs:element name="Signatures">
+    <xs:annotation>
+      <xs:documentation>签名信息文件的根节点。</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Signature" type="CT_Signature" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="CT_Signature">
+    <xs:annotation>
+      <xs:documentation>签名信息类型</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Content" type="ds:SignatureType">
+        <xs:annotation>
+          <xs:documentation>签名的内容。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="AppName" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>签名软件名称。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Company" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>签名公司标识。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="AppVersion" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>签名软件版本。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Date" type="xs:dateTime">
+      <xs:annotation>
+        <xs:documentation>签名的时间。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+</xs:schema> 

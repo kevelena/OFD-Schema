@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 (http://www.altova.com) by TEAM ViRiLiTY (VRL) -->
+<xs:schema xmlns="http://www.ofdspec.org"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://www.ofdspec.org" elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+  <xs:include schemaLocation="Definitions.xsd" />
+  <!--文档结构定义。-->
+  <xs:element name="Document">
+    <xs:annotation>
+      <xs:documentation>文档文件根元素。</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CommonData" type="CT_CommonData">
+          <xs:annotation>
+            <xs:documentation>文档公共数据，定义了默认页面单位、页面区域定义、公 共资源等数据。</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Pages" type="CT_Pages">
+          <xs:annotation>
+            <xs:documentation>页树。</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Outlines" type="CT_Outlines" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>（可选）大纲树。</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CustomTags" type="ST_Loc" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>（可选）指向自定义标引文件。</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Extensions" type="ST_Loc" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>（可选）指向扩展文件。</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Annotations" type="ST_Loc" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>（可选）指向注释文件。</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="CT_CommonData">
+    <xs:annotation>
+      <xs:documentation>文档公共数据类型。定义了全局默认值等信息。 </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="MaxUnitID" type="ST_ID">
+        <xs:annotation>
+          <xs:documentation>当前文档中所有对象使用的最大标识。 </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PageArea" type="CT_PageArea">
+        <xs:annotation>
+          <xs:documentation>指定多个页面区域的大小和位置。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PublicRes" type="ST_Loc" minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>公共资源序列，每个资源指向OFD包内部的一个XML文件，资 源部分的描述请参考资源类型描述。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TemplatePage" type="CT_TemplatePage" minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>模板页序列，实际为一系列模板页的集合，模板页结构和普 通页结构相同，详细描述请参见页树。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DefaultCS" type="ST_RefID" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>文档定义的缺省颜色空间，有关颜色空间的详细描述，请参 见颜色空间类型。如果此项不存在，采用RGB作为缺省颜色空间。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--页树-->
+  <xs:complexType name="CT_Pages">
+    <xs:annotation>
+      <xs:documentation>页集合类型。</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Page" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>一个页树中包含一个或多个页面。</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="CT_Base">
+              <xs:attribute name="BaseLoc" type="ST_Loc" use="required">
+                <xs:annotation>
+                  <xs:documentation>定义页结构描述文件的存储路径。 </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CT_TemplatePage">
+    <xs:annotation>
+      <xs:documentation>模板页类型。</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="CT_Base">
+        <xs:attribute name="BaseLoc" type="ST_Loc" use="required">
+          <xs:annotation>
+            <xs:documentation>指向定义页面内容的文件。</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Name" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>（可选）模板页的名称。</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ZOrder">
+          <xs:annotation>
+            <xs:documentation>模板页的默认类型，当引用者不指定类型时，以此类型为 准。</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="Background">
+                <xs:annotation>
+                  <xs:documentation>显示为背景。</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="Foreground">
+                <xs:annotation>
+                  <xs:documentation>显示为前景。</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!--大纲-->
+  <xs:complexType name="CT_Outlines">
+    <xs:annotation>
+      <xs:documentation>大纲根节点类型。</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="OutlineElem" type="CT_OutlineElem"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>大纲中可以包含一个或多个一级节点。 </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CT_OutlineElem">
+    <xs:annotation>
+      <xs:documentation>大纲节点类型。定义了大纲树中的一个节点。 </xs:documentation>
+    </xs:annotation>
+    <xs:sequence minOccurs="0">
+      <xs:element name="Actions" type="CT_Actions" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>（可选）当此大纲节点被激活时将执行的动作。大纲节点下 的Action的Event属性应固定为CLICK。</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="OutlineElem" type="CT_OutlineElem" minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>（可选）大纲节点，层层嵌套，形成树状结构。 </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Title" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>大纲节点的显示值。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Count" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>该节点下所有叶节点的数目，</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Expanded" type="xs:boolean" default="true">
+      <xs:annotation>
+        <xs:documentation>在存在子节点时有效，如果为true，表示该大纲集在初始状态 下展开子节点。</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+</xs:schema> 
