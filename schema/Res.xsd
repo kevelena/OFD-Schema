@@ -59,7 +59,7 @@
         </xs:element>
         <xs:element name="CompositeGraphicUnits" minOccurs="0">
           <xs:annotation>
-            <xs:documentation>包含了一组复合对象的描述，将复合对象定义于此是为了 在页面或页面间重用。</xs:documentation>
+            <xs:documentation>包含了一组复合对象的描述，将复合对象定义于此是为了在页面或页面间重用。</xs:documentation>
           </xs:annotation>
           <xs:complexType>
             <xs:sequence>
@@ -205,7 +205,7 @@
         <xs:sequence>
           <xs:element name="FontFile" type="ST_Loc" minOccurs="0">
             <xs:annotation>
-              <xs:documentation>指向TrueType或OpenType子集化字体文件，应是包内的 一个有效字体文件。</xs:documentation>
+              <xs:documentation>指向TrueType或OpenType子集化字体文件，应是包内的一个有效字体文件。</xs:documentation>
             </xs:annotation>
           </xs:element>
         </xs:sequence>

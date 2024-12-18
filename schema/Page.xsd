@@ -14,7 +14,7 @@
       <xs:sequence>
         <xs:element name="Template" minOccurs="0" maxOccurs="unbounded">
           <xs:annotation>
-            <xs:documentation>该页面使用的模板页。在模板页的页结构描述中该属性无 效。</xs:documentation>
+            <xs:documentation>该页面使用的模板页。在模板页的页结构描述中该属性无效。</xs:documentation>
           </xs:annotation>
           <xs:complexType>
             <xs:attribute name="TemplateID" type="ST_RefID" use="required">
@@ -24,7 +24,7 @@
             </xs:attribute>
             <xs:attribute name="ZOrder" use="optional" default="Background">
               <xs:annotation>
-                <xs:documentation>控制模板在页面中的呈现次序。如果此属性相等，则 应根据其出现的顺序来显示，先出现者先绘制。</xs:documentation>
+                <xs:documentation>控制模板在页面中的呈现次序。如果此属性相等，则应根据其出现的顺序来显示，先出现者先绘制。</xs:documentation>
               </xs:annotation>
               <xs:simpleType>
                 <xs:restriction base="xs:string">
@@ -37,7 +37,7 @@
         </xs:element>
         <xs:element name="Area" type="CT_PageArea" minOccurs="0">
           <xs:annotation>
-            <xs:documentation>定义该页页面区域的大小和位置，仅对该页有效。该节点 不出现时则先看模板页中的定义，如果模板页不存在或模板页没有定义页面区域则使用文档
+            <xs:documentation>定义该页页面区域的大小和位置，仅对该页有效。该节点不出现时则先看模板页中的定义，如果模板页不存在或模板页没有定义页面区域则使用文档
               根节点中的定义。</xs:documentation>
           </xs:annotation>
         </xs:element>
@@ -63,7 +63,7 @@
         </xs:element>
         <xs:element name="Actions" type="CT_Actions" minOccurs="0">
           <xs:annotation>
-            <xs:documentation>该页所具有的动作序列。页面中不能出现Event=DO的动 作。</xs:documentation>
+            <xs:documentation>该页所具有的动作序列。页面中不能出现Event=DO的动作。</xs:documentation>
           </xs:annotation>
         </xs:element>
       </xs:sequence>
@@ -100,7 +100,7 @@
           </xs:attribute>
           <xs:attribute name="CTM" type="ST_Array">
             <xs:annotation>
-              <xs:documentation>针对对象坐标系，对Area下包含的Path和Text进行进一 步的变换。</xs:documentation>
+              <xs:documentation>针对对象坐标系，对Area下包含的Path和Text进行进一步的变换。</xs:documentation>
             </xs:annotation>
           </xs:attribute>
         </xs:complexType>
@@ -144,7 +144,7 @@
                   <xs:attribute name="ResourceID" type="ST_RefID"
                     use="required">
                     <xs:annotation>
-                      <xs:documentation>通过此属性引用资源中定义的复合对象，以其 作为绘制内容。</xs:documentation>
+                      <xs:documentation>通过此属性引用资源中定义的复合对象，以其作为绘制内容。</xs:documentation>
                     </xs:annotation>
                   </xs:attribute>
                 </xs:extension>
@@ -189,7 +189,7 @@
               </xs:enumeration>
               <xs:enumeration value="Custom">
                 <xs:annotation>
-                  <xs:documentation>自定义图层，自定义图层需要配合扩展数据来决定 其显示顺序。</xs:documentation>
+                  <xs:documentation>自定义图层，自定义图层需要配合扩展数据来决定其显示顺序。</xs:documentation>
                 </xs:annotation>
               </xs:enumeration>
             </xs:restriction>
@@ -197,7 +197,7 @@
         </xs:attribute>
         <xs:attribute name="DrawParam" type="ST_RefID">
           <xs:annotation>
-            <xs:documentation>图层的默认绘制参数。指向页内资源文件中所列的绘制参 数（样式）之一</xs:documentation>
+            <xs:documentation>图层的默认绘制参数。指向页内资源文件中所列的绘制参数（样式）之一</xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>
@@ -442,7 +442,7 @@
     </xs:attribute>
     <xs:attribute name="GlyphCount" type="xs:int" default="1">
       <xs:annotation>
-        <xs:documentation>变换关系中字型索引的个数，该数值应大于等于1，否则属于 错误描述，缺省为1。</xs:documentation>
+        <xs:documentation>变换关系中字型索引的个数，该数值应大于等于1，否则属于错误描述，缺省为1。</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
@@ -460,7 +460,7 @@
         </xs:attribute>
         <xs:attribute name="Substitution" type="ST_RefID">
           <xs:annotation>
-            <xs:documentation>（可选）指定可替换图像，用于某些情况如高分辨率输出 时进行图像替换。</xs:documentation>
+            <xs:documentation>（可选）指定可替换图像，用于某些情况如高分辨率输出时进行图像替换。</xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>
@@ -476,7 +476,7 @@
         <xs:sequence>
           <xs:element name="AbbreviatedData" type="xs:string">
             <xs:annotation>
-              <xs:documentation>定义了一种路径元素描述序列，由一系列紧缩的操作符 和操作数构成。使用对象相对坐标系。</xs:documentation>
+              <xs:documentation>定义了一种路径元素描述序列，由一系列紧缩的操作符和操作数构成。使用对象相对坐标系。</xs:documentation>
             </xs:annotation>
           </xs:element>
         </xs:sequence>
@@ -492,7 +492,7 @@
         </xs:attribute>
         <xs:attribute name="Rule" default="NonZero">
           <xs:annotation>
-            <xs:documentation>描述Path的填充规则。可选值为NonZero和Even-Odd，默 认值为NonZero。</xs:documentation>
+            <xs:documentation>描述Path的填充规则。可选值为NonZero和Even-Odd，默认值为NonZero。</xs:documentation>
           </xs:annotation>
           <xs:simpleType>
             <xs:restriction base="xs:string">
@@ -543,12 +543,12 @@
               </xs:attribute>
               <xs:attribute name="DashOffset" type="xs:double" default="0">
                 <xs:annotation>
-                  <xs:documentation>虚线偏移值，边框的起始点位置为左上角，绕行方 向为顺时针。</xs:documentation>
+                  <xs:documentation>虚线偏移值，边框的起始点位置为左上角，绕行方向为顺时针。</xs:documentation>
                 </xs:annotation>
               </xs:attribute>
               <xs:attribute name="DashPattern" type="ST_Array">
                 <xs:annotation>
-                  <xs:documentation>虚线重复样式，边框的起始点位置为左上角，绕行 方向为顺时针。</xs:documentation>
+                  <xs:documentation>虚线重复样式，边框的起始点位置为左上角，绕行方向为顺时针。</xs:documentation>
                 </xs:annotation>
               </xs:attribute>
             </xs:complexType>
@@ -667,7 +667,7 @@
               <xs:attribute name="Position" type="xs:double">
                 <xs:annotation>
 
-                  <xs:documentation>介于0~1之间，用于确定StartPoint和EndPoint中 的各颜色的位置值。超过取值范围时按照不设置此属性计算。</xs:documentation>
+                  <xs:documentation>介于0~1之间，用于确定StartPoint和EndPoint中的各颜色的位置值。超过取值范围时按照不设置此属性计算。</xs:documentation>
                 </xs:annotation>
               </xs:attribute>
             </xs:complexType>
@@ -687,12 +687,12 @@
         </xs:attribute>
         <xs:attribute name="MapUnit" type="xs:double">
           <xs:annotation>
-            <xs:documentation>当MapType的值不为Direct时出现。表示轴线上一个渐变 区间所绘制的长度，默认值为轴线长度。</xs:documentation>
+            <xs:documentation>当MapType的值不为Direct时出现。表示轴线上一个渐变区间所绘制的长度，默认值为轴线长度。</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="Extend" default="0">
           <xs:annotation>
-            <xs:documentation>当轴线至少有一侧位于Clip裁剪区域对象内部时，轴线延 长线方向是否继续绘制渐变。可选值为0、1、2、3，默认值为0。</xs:documentation>
+            <xs:documentation>当轴线至少有一侧位于Clip裁剪区域对象内部时，轴线延长线方向是否继续绘制渐变。可选值为0、1、2、3，默认值为0。</xs:documentation>
           </xs:annotation>
           <xs:simpleType>
             <xs:restriction base="xs:int">
@@ -750,7 +750,7 @@
               </xs:sequence>
               <xs:attribute name="Position" type="xs:double">
                 <xs:annotation>
-                  <xs:documentation>介于0~1之间，用于确定StartPoint和EndPoint中 的各颜色的位置值，超过取值范围时按照不设置此属性计算。</xs:documentation>
+                  <xs:documentation>介于0~1之间，用于确定StartPoint和EndPoint中的各颜色的位置值，超过取值范围时按照不设置此属性计算。</xs:documentation>
                 </xs:annotation>
               </xs:attribute>
             </xs:complexType>
@@ -770,7 +770,7 @@
         </xs:attribute>
         <xs:attribute name="MapUnit" type="xs:double">
           <xs:annotation>
-            <xs:documentation>当MapType的值不为Direct时出现。表示中心点连线上一 个渐变区间所绘制的长度，默认值为中心点连线长度。</xs:documentation>
+            <xs:documentation>当MapType的值不为Direct时出现。表示中心点连线上一个渐变区间所绘制的长度，默认值为中心点连线长度。</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="Eccentricity" type="xs:double" default="0">
@@ -780,7 +780,7 @@
         </xs:attribute>
         <xs:attribute name="Angle" type="xs:double" default="0">
           <xs:annotation>
-            <xs:documentation>倾斜角度，椭圆长轴与x轴正向的夹角，默认值为0，单位 为角度。 </xs:documentation>
+            <xs:documentation>倾斜角度，椭圆长轴与x轴正向的夹角，默认值为0，单位为角度。 </xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="StartPoint" type="ST_Pos" use="required">
@@ -805,7 +805,7 @@
         </xs:attribute>
         <xs:attribute name="Extend" type="xs:int" default="0">
           <xs:annotation>
-            <xs:documentation>当轴线至少有一侧位于Clip裁剪区域对象内部时，轴线延 长线方向是否继续绘制渐变。可选值为0、1、2、3，默认值为0。</xs:documentation>
+            <xs:documentation>当轴线至少有一侧位于Clip裁剪区域对象内部时，轴线延长线方向是否继续绘制渐变。可选值为0、1、2、3，默认值为0。</xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>

@@ -15,14 +15,14 @@
       <xs:sequence>
         <xs:element name="Structure" maxOccurs="unbounded">
           <xs:annotation>
-            <xs:documentation>流式语义结构。该结构中的点通过RefId引用版式内容流 中的图元和信息。</xs:documentation>
+            <xs:documentation>流式语义结构。该结构中的点通过RefId引用版式内容流中的图元和信息。</xs:documentation>
           </xs:annotation>
           <xs:complexType>
             <xs:complexContent>
               <xs:extension base="xs:anyType">
                 <xs:attribute name="Schema" type="ST_Loc">
                   <xs:annotation>
-                    <xs:documentation>指向自定义标引内容节点适用的Shema定义文 件。</xs:documentation>
+                    <xs:documentation>指向自定义标引内容节点适用的Shema定义文件。</xs:documentation>
                   </xs:annotation>
                 </xs:attribute>
               </xs:extension>
